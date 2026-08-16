@@ -3,106 +3,133 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KNGL Community Portal</title>
+  <title>KNGL Social - Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
-    body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
-    .glass { background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-    .badge-owner { background: linear-gradient(135deg, #ef4444, #991b1b); color: white; }
-    .badge-mod { background: linear-gradient(135deg, #3b82f6, #1e40af); color: white; }
-    .badge-vip { background: linear-gradient(135deg, #eab308, #854d0e); color: white; }
-    .badge-goat { background: linear-gradient(135deg, #a855f7, #6b21a8); color: white; }
-    .badge-member { background: #475569; color: #cbd5e1; }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; color: #f3f4f6; }
+    
+    /* Netlify Orijinal Arayüz CSS Cam Efektleri & Gradyanlar */
+    .glass-card { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.07); }
+    .nav-active { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); color: white; box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39); }
+    
+    /* Kick & Moderasyon Rol Rozetleri */
+    .badge-owner { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); color: #ffffff; }
+    .badge-mod { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: #ffffff; }
+    .badge-vip { background: linear-gradient(135deg, #eab308 0%, #a16207 100%); color: #ffffff; }
+    .badge-goat { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); color: #ffffff; }
+    .badge-member { background: #374151; color: #9ca3af; }
+
     .chat-scroll::-webkit-scrollbar { width: 5px; }
-    .chat-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    .chat-scroll::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col justify-between">
 
-  <!-- Header -->
-  <header class="glass sticky top-0 z-50 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-      <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center font-black text-xl shadow-lg shadow-indigo-500/30">
-        K
+  <!-- Header Banner -->
+  <header class="glass-card sticky top-0 z-50 border-b border-gray-800/80 px-4 md:px-8 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-0.5 shadow-lg shadow-indigo-500/20">
+        <div class="w-full h-full bg-gray-900 rounded-[10px] flex items-center justify-center font-extrabold text-indigo-400 text-xl">
+          K
+        </div>
       </div>
-      <span class="font-bold text-xl tracking-wider text-white">KNGL <span class="text-indigo-400">PORTAL</span></span>
+      <div>
+        <h1 class="font-black text-lg tracking-wide text-white leading-tight">KNGL<span class="text-indigo-500">.SOCIAL</span></h1>
+        <p class="text-[10px] text-gray-400 font-medium">Topluluk & Canlı Yayın Portalı</p>
+      </div>
     </div>
 
-    <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
-      <button onclick="switchTab('feed')" class="hover:text-indigo-400 transition flex items-center gap-2"><i class="fa-solid fa-house"></i> Akış</button>
-      <button onclick="switchTab('chat')" class="hover:text-indigo-400 transition flex items-center gap-2"><i class="fa-solid fa-comments"></i> Canlı Sohbet</button>
-      <button onclick="switchTab('dm')" class="hover:text-indigo-400 transition flex items-center gap-2 relative">
-        <i class="fa-solid fa-paper-plane"></i> Özel Mesajlar (DM)
+    <!-- Orta Sekme Menüsü -->
+    <nav class="hidden lg:flex items-center bg-gray-900/90 p-1.5 rounded-2xl border border-gray-800 text-xs font-semibold gap-1">
+      <button onclick="switchTab('feed')" id="btn-tab-feed" class="nav-active px-4 py-2 rounded-xl flex items-center gap-2 transition">
+        <i class="fa-solid fa-square-rss"></i> Sosyal Akış
       </button>
-      <button onclick="switchTab('memorial')" class="hover:text-amber-400 transition flex items-center gap-2 text-amber-500 font-semibold"><i class="fa-solid fa-heart"></i> Jrokez Anısına</button>
+      <button onclick="switchTab('chat')" id="btn-tab-chat" class="text-gray-400 hover:text-white px-4 py-2 rounded-xl flex items-center gap-2 transition">
+        <i class="fa-solid fa-comments"></i> Canlı Sohbet
+      </button>
+      <button onclick="switchTab('dm')" id="btn-tab-dm" class="text-gray-400 hover:text-white px-4 py-2 rounded-xl flex items-center gap-2 transition">
+        <i class="fa-solid fa-paper-plane"></i> Mesajlar (DM)
+      </button>
+      <button onclick="switchTab('memorial')" id="btn-tab-memorial" class="text-amber-400 hover:text-amber-300 px-4 py-2 rounded-xl flex items-center gap-2 transition font-bold">
+        <i class="fa-solid fa-heart text-amber-500"></i> Jrokez Anısına
+      </button>
     </nav>
 
-    <div class="flex items-center space-x-4">
-      <div class="flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-full border border-slate-700">
-        <i class="fa-solid fa-coins text-yellow-400"></i>
-        <span id="user-points" class="font-bold text-sm">1,250 Puan</span>
+    <!-- Kullanıcı & Puan Alanı -->
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 bg-gray-900 px-3.5 py-1.5 rounded-xl border border-gray-800 text-xs font-bold text-amber-400 shadow-inner">
+        <i class="fa-solid fa-coins"></i>
+        <span id="user-points">1,250 P</span>
       </div>
-      <div class="relative group">
-        <img id="header-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=oenaenna" class="w-10 h-10 rounded-full border-2 border-indigo-500 cursor-pointer object-cover" onclick="switchTab('profile')">
-      </div>
+      <img id="header-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=oenaenna" onclick="switchTab('profile')" class="w-10 h-10 rounded-xl border-2 border-indigo-500/80 cursor-pointer object-cover hover:opacity-90 transition">
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+  <!-- Mobil Alt Menü Navigasyonu -->
+  <div class="lg:hidden fixed bottom-0 left-0 right-0 z-50 glass-card border-t border-gray-800 p-2 flex justify-around text-xs font-semibold">
+    <button onclick="switchTab('feed')" class="text-gray-300 p-2 flex flex-col items-center gap-1"><i class="fa-solid fa-square-rss text-base"></i> Akış</button>
+    <button onclick="switchTab('chat')" class="text-gray-300 p-2 flex flex-col items-center gap-1"><i class="fa-solid fa-comments text-base"></i> Sohbet</button>
+    <button onclick="switchTab('dm')" class="text-gray-300 p-2 flex flex-col items-center gap-1"><i class="fa-solid fa-paper-plane text-base"></i> DM</button>
+    <button onclick="switchTab('memorial')" class="text-amber-400 p-2 flex flex-col items-center gap-1"><i class="fa-solid fa-heart text-base"></i> Anı</button>
+  </div>
 
-    <!-- Left Sidebar: Profile & Search -->
+  <!-- Ana İçerik Gövdesi -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6 mb-16 lg:mb-0">
+
+    <!-- Sol Taraf: Profil Özeti & Kullanıcı Arama -->
     <aside class="space-y-6">
       
-      <!-- Current User Mini Card -->
-      <div class="glass rounded-2xl p-5 border border-slate-800 text-center relative overflow-hidden">
-        <div class="h-20 bg-gradient-to-r from-indigo-600 to-purple-600 absolute top-0 left-0 right-0"></div>
-        <div class="relative pt-8">
+      <!-- Kullanıcı Profil Kartı -->
+      <div class="glass-card rounded-2xl p-5 text-center relative overflow-hidden">
+        <div class="h-20 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 absolute top-0 left-0 right-0"></div>
+        <div class="relative pt-6">
           <div class="relative w-20 h-20 mx-auto">
-            <img id="side-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=oenaenna" class="w-20 h-20 rounded-full border-4 border-slate-900 shadow-xl bg-slate-800 object-cover">
-            <label for="avatar-input-side" class="absolute bottom-0 right-0 bg-indigo-600 hover:bg-indigo-500 text-white p-1.5 rounded-full cursor-pointer shadow-lg text-xs">
+            <img id="side-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=oenaenna" class="w-20 h-20 rounded-2xl border-4 border-gray-900 shadow-2xl bg-gray-800 object-cover">
+            <label for="avatar-file-side" class="absolute -bottom-1 -right-1 bg-indigo-600 hover:bg-indigo-500 text-white p-2 rounded-xl cursor-pointer shadow-lg text-xs transition">
               <i class="fa-solid fa-camera"></i>
             </label>
-            <input type="file" id="avatar-input-side" accept="image/*" class="hidden" onchange="uploadAvatar(event)">
+            <input type="file" id="avatar-file-side" accept="image/*" class="hidden" onchange="uploadAvatar(event)">
           </div>
-          <h3 class="font-bold text-lg mt-3 text-white flex items-center justify-center gap-2" id="side-username">
-            oenaenna 
+          <h3 class="font-bold text-lg mt-3 text-white flex items-center justify-center gap-1.5" id="side-username">
+            oenaenna
           </h3>
-          <div id="side-role-badge" class="mt-1"><span class="badge-owner text-xs px-2 py-0.5 rounded-full font-bold">KURUCU</span></div>
+          <div id="side-role-badge" class="mt-1">
+            <span class="badge-owner text-[10px] px-2.5 py-0.5 rounded-md font-extrabold uppercase tracking-wider shadow-sm">KURUCU</span>
+          </div>
         </div>
       </div>
 
-      <!-- User Search Component -->
-      <div class="glass rounded-2xl p-4 border border-slate-800 space-y-3">
-        <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider flex items-center justify-between">
+      <!-- Kullanıcı Arama Paneli -->
+      <div class="glass-card rounded-2xl p-4 space-y-3">
+        <div class="flex items-center justify-between text-xs font-bold text-gray-400 uppercase tracking-wider">
           <span>Kullanıcı Ara</span>
-          <i class="fa-solid fa-magnifying-glass text-slate-500"></i>
-        </h4>
-        <input type="text" id="user-search-input" placeholder="Nick yazın..." oninput="searchUsers()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          <i class="fa-solid fa-magnifying-glass text-indigo-400"></i>
+        </div>
+        <input type="text" id="user-search-input" placeholder="Kullanıcı adı yazın..." oninput="searchUsers()" class="w-full bg-gray-900/90 border border-gray-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
         
-        <div id="search-results" class="space-y-2 max-h-48 overflow-y-auto chat-scroll pt-1">
-          <p class="text-xs text-slate-500 text-center py-2">Aramak için isim yazın...</p>
+        <div id="search-results" class="space-y-2 max-h-52 overflow-y-auto chat-scroll pt-1">
+          <p class="text-xs text-gray-500 text-center py-3">Aramak için isim yazın...</p>
         </div>
       </div>
 
     </aside>
 
-    <!-- Center Content -->
+    <!-- Orta Alan: Sosyal Akış / Canlı Sohbet / DM / Anı Köşesi -->
     <section class="lg:col-span-2 space-y-6">
 
-      <!-- Feed Section -->
+      <!-- Sosyal Akış (Feed) -->
       <div id="tab-feed" class="tab-content space-y-6">
-        <div class="glass rounded-2xl p-4 border border-slate-800 space-y-3">
-          <textarea id="post-input" placeholder="KNGL topluluğuna ne duyurmak istersin?" class="w-full bg-slate-900/60 rounded-xl p-3 text-sm border border-slate-700/60 focus:outline-none focus:border-indigo-500 resize-none h-20 text-white"></textarea>
-          <div class="flex items-center justify-between pt-2 border-t border-slate-800">
-            <label for="post-img-upload" class="cursor-pointer text-slate-400 hover:text-indigo-400 text-sm flex items-center gap-2">
-              <i class="fa-solid fa-image"></i>
-              <span class="text-xs">Resim Ekle</span>
+        <div class="glass-card rounded-2xl p-4 space-y-3">
+          <textarea id="post-input" placeholder="KNGL topluluğuyla ne paylaşmak istersin?" class="w-full bg-gray-900/80 rounded-xl p-3.5 text-sm border border-gray-800 focus:outline-none focus:border-indigo-500 resize-none h-24 text-white placeholder-gray-500"></textarea>
+          <div class="flex items-center justify-between pt-2 border-t border-gray-800/80">
+            <label for="post-img-upload" class="cursor-pointer text-gray-400 hover:text-indigo-400 text-xs font-medium flex items-center gap-2 transition">
+              <i class="fa-solid fa-image text-sm"></i>
+              <span>Fotoğraf Ekle</span>
             </label>
             <input type="file" id="post-img-upload" accept="image/*" class="hidden">
-            <button onclick="createPost()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-2 rounded-xl transition shadow-lg shadow-indigo-600/30">
+            <button onclick="createPost()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition shadow-lg shadow-indigo-600/30">
               Paylaş
             </button>
           </div>
@@ -111,102 +138,103 @@
         <div id="feed-container" class="space-y-4"></div>
       </div>
 
-      <!-- Chat Section (Kick-Style) -->
-      <div id="tab-chat" class="tab-content hidden h-[600px] flex flex-col glass rounded-2xl border border-slate-800">
-        <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+      <!-- Canlı Sohbet Sekmesi (Kick Tarzı) -->
+      <div id="tab-chat" class="tab-content hidden h-[600px] flex flex-col glass-card rounded-2xl overflow-hidden">
+        <div class="p-4 border-b border-gray-800 bg-gray-900/60 flex items-center justify-between">
           <div class="flex items-center space-x-2">
-            <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
-            <h3 class="font-bold text-white">Canlı Sohbet</h3>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <h3 class="font-bold text-sm text-white">Genel Sohbet Odası</h3>
           </div>
-          <span class="text-xs text-slate-400">Gerçek Zamanlı</span>
+          <span class="text-[10px] text-gray-400 bg-gray-800 px-2 py-0.5 rounded-full">Botlar Temizlendi</span>
         </div>
 
         <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 chat-scroll text-sm">
-          <div class="text-xs text-slate-500 text-center italic">Sohbet odasına hoş geldiniz. Botlar temizlendi!</div>
+          <div class="text-xs text-gray-500 text-center italic py-2">Odaya bağlandınız. Sohbet etmeye başlayabilirsiniz.</div>
         </div>
 
-        <div class="p-3 border-t border-slate-800 flex gap-2">
-          <input type="text" id="chat-input" placeholder="Mesajını yaz..." class="flex-1 bg-slate-900/80 border border-slate-700/60 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-indigo-500 text-white" onkeydown="if(event.key==='Enter') sendChatMessage()">
-          <button onclick="sendChatMessage()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition">
+        <div class="p-3 border-t border-gray-800 bg-gray-900/80 flex gap-2">
+          <input type="text" id="chat-input" placeholder="Bir mesaj yazın..." class="flex-1 bg-gray-900 border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500" onkeydown="if(event.key==='Enter') sendChatMessage()">
+          <button onclick="sendChatMessage()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition">
             Gönder
           </button>
         </div>
       </div>
 
-      <!-- DM Section -->
-      <div id="tab-dm" class="tab-content hidden glass rounded-2xl p-6 border border-slate-800 space-y-4">
-        <h3 class="font-bold text-lg text-white border-b border-slate-800 pb-3 flex items-center gap-2">
-          <i class="fa-solid fa-envelope text-indigo-400"></i> Özel Mesajlar (DM)
+      <!-- DM Sekmesi -->
+      <div id="tab-dm" class="tab-content hidden glass-card rounded-2xl p-6 space-y-4">
+        <h3 class="font-bold text-base text-white border-b border-gray-800 pb-3 flex items-center gap-2">
+          <i class="fa-solid fa-paper-plane text-indigo-400"></i> Özel Mesajlaşma (DM)
         </h3>
-        <div id="dm-active-user" class="text-sm font-semibold text-indigo-400">Bir kullanıcı seçilmedi</div>
-        <div id="dm-box" class="h-64 bg-slate-900/60 rounded-xl p-4 overflow-y-auto chat-scroll space-y-2 text-sm border border-slate-800">
-          <p class="text-xs text-slate-500 text-center">Arama kısmından bir kullanıcıya tıklayıp "Mesaj Gönder" butonunu kullanın.</p>
+        <div id="dm-active-user" class="text-xs font-bold text-indigo-400">Bir sohbet seçilmedi</div>
+        <div id="dm-box" class="h-64 bg-gray-900/80 rounded-xl p-4 overflow-y-auto chat-scroll space-y-2 text-xs border border-gray-800">
+          <p class="text-xs text-gray-500 text-center py-6">Sol taraftaki kullanıcı aramasından birine basıp "DM At" butonuna tıklayabilirsiniz.</p>
         </div>
         <div class="flex gap-2">
-          <input type="text" id="dm-input" placeholder="Özel mesaj yazın..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none">
-          <button onclick="sendDM()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold">Gönder</button>
+          <input type="text" id="dm-input" placeholder="Mesajınızı girin..." class="flex-1 bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none">
+          <button onclick="sendDM()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-xl text-xs font-bold">Gönder</button>
         </div>
       </div>
 
-      <!-- Memorial Section -->
+      <!-- Jrokez Anısına -->
       <div id="tab-memorial" class="tab-content hidden space-y-6">
-        <div class="glass rounded-2xl p-6 border border-amber-500/30 bg-gradient-to-b from-amber-950/20 to-slate-900/80 text-center relative overflow-hidden">
+        <div class="glass-card rounded-2xl p-8 border border-amber-500/30 bg-gradient-to-b from-amber-950/20 to-gray-900/80 text-center relative overflow-hidden">
           <div class="w-24 h-24 mx-auto rounded-full border-4 border-amber-500/50 p-1 mb-4 shadow-2xl">
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Jrokez" class="w-full h-full rounded-full bg-slate-800">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Jrokez" class="w-full h-full rounded-full bg-gray-800">
           </div>
           <h2 class="text-2xl font-black text-amber-400">Jrokez Anısına</h2>
-          <p class="text-sm text-slate-300 mt-2 italic max-w-md mx-auto">
+          <p class="text-xs md:text-sm text-gray-300 mt-2 italic max-w-md mx-auto leading-relaxed">
             "1 sene olsa bile seni unutmayacağız. Mekanın cennet olsun, kalbimizdesin..."
           </p>
         </div>
       </div>
 
-      <!-- My Profile Settings Tab -->
-      <div id="tab-profile" class="tab-content hidden glass rounded-2xl p-6 border border-slate-800 space-y-4">
-        <h3 class="font-bold text-lg text-white">Profil Düzenle</h3>
+      <!-- Kendi Profil Düzenleme Ayarları -->
+      <div id="tab-profile" class="tab-content hidden glass-card rounded-2xl p-6 space-y-4">
+        <h3 class="font-bold text-base text-white border-b border-gray-800 pb-3">Profil Düzenle</h3>
         <div class="space-y-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Profil Resmi Değiştir (Galeri / Dosyalar)</label>
-            <input type="file" id="avatar-file-upload" accept="image/*" class="bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white w-full" onchange="uploadAvatar(event)">
+            <label class="block text-xs font-semibold text-gray-400 mb-1.5">Profil Resmi Seç (Galeri / Dosyalar)</label>
+            <input type="file" id="avatar-file-upload" accept="image/*" class="bg-gray-900 border border-gray-800 rounded-xl p-2 text-xs text-white w-full cursor-pointer" onchange="uploadAvatar(event)">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Kullanıcı Adı</label>
-            <input type="text" id="profile-name-input" value="oenaenna" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
+            <label class="block text-xs font-semibold text-gray-400 mb-1.5">Kullanıcı Adı</label>
+            <input type="text" id="profile-name-input" value="oenaenna" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
           </div>
-          <button onclick="saveProfile()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold">Kaydet</button>
+          <button onclick="saveProfile()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-xl text-xs font-bold transition">Kaydet</button>
         </div>
       </div>
 
     </section>
 
-    <!-- Right Sidebar: User Profile View & Moderation -->
+    <!-- Sağ Taraf: İnceleme & Rol Atama Kartı -->
     <aside class="space-y-6">
       
-      <!-- User Profile Viewer Card -->
-      <div id="user-view-card" class="glass rounded-2xl p-5 border border-slate-800 text-center space-y-3">
-        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider text-left">Profil İnceleme</h4>
-        <img id="view-user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Rain_karaduman94" class="w-16 h-16 rounded-full mx-auto border-2 border-indigo-500 object-cover">
+      <div id="user-view-card" class="glass-card rounded-2xl p-5 text-center space-y-3">
+        <div class="text-xs font-bold text-gray-400 uppercase tracking-wider text-left border-b border-gray-800/80 pb-2">
+          Kullanıcı İnceleme
+        </div>
+        <img id="view-user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Rain_karaduman94" class="w-16 h-16 rounded-2xl mx-auto border-2 border-indigo-500/80 object-cover shadow-lg">
         <div>
-          <h3 id="view-user-name" class="font-bold text-white text-base">Rain_karaduman94</h3>
-          <span id="view-user-role" class="badge-vip text-[10px] px-2 py-0.5 rounded font-bold">VIP</span>
+          <h3 id="view-user-name" class="font-bold text-white text-sm">Rain_karaduman94</h3>
+          <span id="view-user-role" class="badge-vip text-[9px] px-2 py-0.5 rounded font-extrabold uppercase mt-1 inline-block">VIP</span>
         </div>
         
-        <div class="flex gap-2 pt-2">
-          <button id="btn-follow" onclick="toggleFollow()" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2 rounded-xl transition">Takip Et</button>
-          <button onclick="startDMFromProfile()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold py-2 rounded-xl border border-slate-700">DM At</button>
+        <div class="flex gap-2 pt-1">
+          <button id="btn-follow" onclick="toggleFollow()" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2 rounded-xl transition shadow-md">Takip Et</button>
+          <button onclick="startDMFromProfile()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-bold py-2 rounded-xl border border-gray-700 transition">DM At</button>
         </div>
 
-        <!-- Role Assignment (Kick Mod System) -->
-        <div class="border-t border-slate-800 pt-3 text-left space-y-2">
-          <label class="block text-[10px] font-bold text-slate-400 uppercase">Rol Yönetimi (Kick Yetkisi)</label>
-          <select id="role-select" class="w-full bg-slate-900 border border-slate-700 text-xs rounded-xl p-2 text-white">
+        <!-- Moderatör Rol Yönetimi (Kick Mantığı) -->
+        <div class="border-t border-gray-800/80 pt-3 text-left space-y-2">
+          <label class="block text-[10px] font-bold text-gray-400 uppercase">Rol Atama (Kick Yetkisi)</label>
+          <select id="role-select" class="w-full bg-gray-900 border border-gray-800 text-xs rounded-xl p-2 text-white focus:outline-none">
             <option value="KURUCU">KURUCU</option>
             <option value="MOD">MODERATÖR</option>
             <option value="VIP">VIP</option>
             <option value="GOAT">GOAT</option>
             <option value="ÜYE">ÜYE</option>
           </select>
-          <button onclick="assignRole()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2 rounded-xl transition">Rolü Güncelle</button>
+          <button onclick="assignRole()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2 rounded-xl transition shadow-md shadow-emerald-600/20">Rolü Güncelle</button>
         </div>
       </div>
 
@@ -215,7 +243,7 @@
   </main>
 
   <script>
-    // System State
+    // Kullanıcı Durumları
     let currentUser = {
       username: "oenaenna",
       role: "KURUCU",
@@ -237,9 +265,21 @@
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+      // Sekme Buton Stilleri
+      ['feed', 'chat', 'dm', 'memorial'].forEach(t => {
+        const btn = document.getElementById('btn-tab-' + t);
+        if(btn) {
+          if(t === tabId) {
+            btn.className = "nav-active px-4 py-2 rounded-xl flex items-center gap-2 transition";
+          } else {
+            btn.className = t === 'memorial' ? "text-amber-400 hover:text-amber-300 px-4 py-2 rounded-xl flex items-center gap-2 transition font-bold" : "text-gray-400 hover:text-white px-4 py-2 rounded-xl flex items-center gap-2 transition";
+          }
+        }
+      });
     }
 
-    // Avatar Upload (Local File/Gallery)
+    // Galeri / Dosyalardan Resim Yükleme
     function uploadAvatar(event) {
       const file = event.target.files[0];
       if (file) {
@@ -253,33 +293,33 @@
       }
     }
 
-    // Search Users Function
+    // Kullanıcı Arama
     function searchUsers() {
       const query = document.getElementById('user-search-input').value.toLowerCase().trim();
       const container = document.getElementById('search-results');
       container.innerHTML = '';
 
       if(!query) {
-        container.innerHTML = '<p class="text-xs text-slate-500 text-center py-2">Aramak için isim yazın...</p>';
+        container.innerHTML = '<p class="text-xs text-gray-500 text-center py-3">Aramak için isim yazın...</p>';
         return;
       }
 
       const filtered = usersList.filter(u => u.username.toLowerCase().includes(query));
       if(filtered.length === 0) {
-        container.innerHTML = '<p class="text-xs text-slate-500 text-center py-2">Kullanıcı bulunamadı.</p>';
+        container.innerHTML = '<p class="text-xs text-gray-500 text-center py-3">Kullanıcı bulunamadı.</p>';
         return;
       }
 
       filtered.forEach(u => {
         const item = document.createElement('div');
-        item.className = 'flex items-center justify-between bg-slate-900/80 p-2 rounded-xl border border-slate-800 cursor-pointer hover:border-indigo-500 transition';
+        item.className = 'flex items-center justify-between bg-gray-900/80 p-2.5 rounded-xl border border-gray-800 cursor-pointer hover:border-indigo-500 transition';
         item.onclick = () => selectUserView(u);
         item.innerHTML = `
           <div class="flex items-center space-x-2">
-            <img src="${u.avatar}" class="w-7 h-7 rounded-full object-cover">
+            <img src="${u.avatar}" class="w-7 h-7 rounded-lg object-cover">
             <span class="text-xs font-semibold text-white">${u.username}</span>
           </div>
-          <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${getRoleBadgeClass(u.role)}">${u.role}</span>
+          <span class="text-[9px] px-2 py-0.5 rounded font-extrabold ${getRoleBadgeClass(u.role)}">${u.role}</span>
         `;
         container.appendChild(item);
       });
@@ -295,7 +335,7 @@
       
       const badgeEl = document.getElementById('view-user-role');
       badgeEl.innerText = user.role;
-      badgeEl.className = `${getRoleBadgeClass(user.role)} text-[10px] px-2 py-0.5 rounded font-bold`;
+      badgeEl.className = `${getRoleBadgeClass(user.role)} text-[9px] px-2 py-0.5 rounded font-extrabold uppercase mt-1 inline-block`;
     }
 
     function getRoleBadgeClass(role) {
@@ -312,7 +352,7 @@
       selectedUser.isFollowing = !selectedUser.isFollowing;
       const btn = document.getElementById('btn-follow');
       btn.innerText = selectedUser.isFollowing ? "Takip Ediliyor" : "Takip Et";
-      btn.className = selectedUser.isFollowing ? "flex-1 bg-slate-700 text-slate-200 text-xs font-bold py-2 rounded-xl" : "flex-1 bg-indigo-600 text-white text-xs font-bold py-2 rounded-xl";
+      btn.className = selectedUser.isFollowing ? "flex-1 bg-gray-800 text-gray-300 text-xs font-bold py-2 rounded-xl border border-gray-700" : "flex-1 bg-indigo-600 text-white text-xs font-bold py-2 rounded-xl shadow-md";
     }
 
     function assignRole() {
@@ -320,7 +360,6 @@
       selectedUser.role = newRole;
       selectUserView(selectedUser);
 
-      // Update in local array
       const found = usersList.find(u => u.username === selectedUser.username);
       if(found) found.role = newRole;
       alert(`${selectedUser.username} kullanıcısının rolü ${newRole} olarak güncellendi!`);
@@ -337,7 +376,7 @@
 
       const box = document.getElementById('dm-box');
       const msg = document.createElement('div');
-      msg.className = 'bg-indigo-600/30 border border-indigo-500/30 p-2 rounded-xl text-right ml-auto max-w-[80%]';
+      msg.className = 'bg-indigo-600/30 border border-indigo-500/30 p-2.5 rounded-xl text-right ml-auto max-w-[80%]';
       msg.innerHTML = `<span class="text-xs text-white">${txt}</span>`;
       box.appendChild(msg);
       document.getElementById('dm-input').value = '';
@@ -350,19 +389,19 @@
 
       const container = document.getElementById('feed-container');
       const newPost = document.createElement('div');
-      newPost.className = 'glass rounded-2xl p-4 border border-slate-800 space-y-3';
+      newPost.className = 'glass-card rounded-2xl p-4 space-y-3';
       newPost.innerHTML = `
         <div class="flex items-center space-x-3">
-          <img src="${currentUser.avatar}" class="w-9 h-9 rounded-full object-cover bg-slate-800">
+          <img src="${currentUser.avatar}" class="w-9 h-9 rounded-xl object-cover bg-gray-800">
           <div>
             <div class="flex items-center gap-2">
-              <span class="font-bold text-sm text-white">${currentUser.username}</span>
-              <span class="badge-owner text-[10px] px-1.5 py-0.2 rounded font-bold">${currentUser.role}</span>
+              <span class="font-bold text-xs text-white">${currentUser.username}</span>
+              <span class="badge-owner text-[9px] px-1.5 py-0.2 rounded font-extrabold uppercase">${currentUser.role}</span>
             </div>
-            <span class="text-[10px] text-slate-400">Az önce</span>
+            <span class="text-[10px] text-gray-500">Az önce</span>
           </div>
         </div>
-        <p class="text-sm text-slate-200">${txt}</p>
+        <p class="text-xs text-gray-200 leading-relaxed">${txt}</p>
       `;
       container.prepend(newPost);
       document.getElementById('post-input').value = '';
@@ -377,10 +416,10 @@
       const msg = document.createElement('div');
       msg.className = 'flex items-start gap-2';
       msg.innerHTML = `
-        <span class="${getRoleBadgeClass(currentUser.role)} text-[10px] px-1 rounded font-bold mt-0.5">${currentUser.role}</span>
+        <span class="${getRoleBadgeClass(currentUser.role)} text-[9px] px-1.5 py-0.5 rounded font-extrabold mt-0.5">${currentUser.role}</span>
         <div>
           <span class="font-bold text-indigo-400 text-xs">${currentUser.username}:</span>
-          <span class="text-slate-200 text-xs">${val}</span>
+          <span class="text-gray-200 text-xs">${val}</span>
         </div>
       `;
       chatBox.appendChild(msg);
